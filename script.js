@@ -31,6 +31,7 @@ function slugify(s) {
 }
 let POSTS = [];
 let currentSlug = null;
+const SITE_TITLE = document.title;   // captured from index.html; restored when home is shown
 function slugToPost(slug) {
   return POSTS.find(p => (p.slug || slugify(p.file)) === slug);
 }
@@ -115,6 +116,7 @@ function syncFromHash() {
   }
   if (currentSlug) {                       // hash cleared -> back to home
     currentSlug = null;
+    document.title = SITE_TITLE;
     const el = document.querySelector('.contents');
     fetch('/contents/home.html')
       .then(r => r.text())
