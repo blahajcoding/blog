@@ -1,0 +1,142 @@
+@import url(https://orb.gay/style.css);
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: .2s;
+}
+
+.btn.post {
+    flex-direction: column;
+    align-items: start;
+}
+
+.back-label {
+    font-size: 16px;
+}
+
+.back-label:hover {
+    color: #ECD1FF;
+}
+
+tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+tag {
+    background-color: rgba(236, 209, 255, 0.08);
+    padding: 5px 8px;
+    border-radius: 100px;
+    font-size: 14px;
+}
+
+.post-body p {
+    white-space: pre-line;
+    line-height: 1.8em;
+    color: rgba(236, 209, 255, 0.8);
+}
+
+img {
+    width: 100%;
+    border-radius: 16px;
+}
+
+caption {
+    font-style: italic;
+    color: rgba(236, 209, 255, 0.45);
+}
+
+.post-body table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  background-color: rgba(236, 209, 255, 0.04);
+  margin: 16px 0px;
+  border: 1px solid rgba(236, 209, 255, 0.04);
+}
+
+.post-body th,
+.post-body td {
+  border-right: 1px solid rgba(236, 209, 255, 0.08);
+  border-bottom: 1px solid rgba(236, 209, 255, 0.08);
+  border-top: none;
+  border-left: none;
+  padding: 12px;
+}
+
+.post-body th {
+    background-color: rgba(236, 209, 255, 0.08);
+}
+
+.markdown-body th:last-child,
+.markdown-body td:last-child {
+  border-right: none;
+}
+
+/* last row shouldn't double up with the table's own bottom border */
+.markdown-body tr:last-child td {
+  border-bottom: none;
+}
+
+pre {
+    background-color: rgba(236, 209, 255, 0.04);
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(236, 209, 255, 0.04);
+    overflow-y: scroll;
+}
+
+code.hljs {
+    background: transparent !important;
+    color: #ECD1FF !important;
+}
+
+code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+}
+
+.post-body hr {
+  border: 0;
+  height: 32px;
+  background: url('squiggle.svg') center / contain no-repeat;
+}
+
+.post-body h1, .post-body h2, .post-body h3, .post-body h4 {
+    margin: 16px 0;
+}
+
+pre::-webkit-scrollbar {
+    margin-inline: 8px;
+    height: 4px;
+}
+
+li {
+    margin: 16px 0;
+    color: rgba(236, 209, 255, 0.8);
+}
+
+ul {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+}
+
+blockquote {
+    border-left: 4px solid rgba(236, 209, 255, 0.45);
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+}
+
+blockquote p {
+    margin: 16px;
+}
+
+blockquote blockquote {
+    margin: 16px;
+}
