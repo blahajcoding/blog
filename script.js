@@ -26,6 +26,7 @@ function parseFront(raw) {
 
 // 2. Home page: posts/index.json -> post cards
 const POSTS_JSON = "https://blogarchive.orb.gay/index.json";
+const ARCHIVE_BASE = "https://blogarchive.orb.gay/";
 function slugify(s) {
   return s.toLowerCase().replace(/\.md$/, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
@@ -129,6 +130,21 @@ function syncFromHash() {
 window.addEventListener('hashchange', syncFromHash);
 
 // 3. Post view: raw markdown text -> rendered HTML
+//    Rewrite image references to the archive host: Obsidian ![[file]] embeds and
+//    relative paths (e.g. Images/foo.png) both resolve against the page origin
+//    otherwise, which 404s since assets live on blogarchive.orb.gay.
+function fixImageRefs(md) {
+  md = md.replace(/!\[\[([^\]]+)\]\]/g, (_, name) => {
+    const n = name.trim();
+    return `![${n}](${ARCHIVE_BASE}Images/${n})`;
+  });
+  md = md.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, src) => {
+    const s = src.trim();
+    if (/^(https?:|data:|mailto:|\/)/i.test(s)) return m;
+    return `![${alt}](${ARCHIVE_BASE}${s.replace(/^\.?\//, '')})`;
+  });
+  return md;
+}
 function renderIfMarkdown(el) {
   if (el.childElementCount > 0) return;
   const raw = el.textContent.trim();
@@ -152,7 +168,7 @@ function renderIfMarkdown(el) {
         </div>
       </a>
     </hstack>`;
-  el.innerHTML = back + header + `<div class="post-body">${marked.parse(body)}</div>`;
+  el.innerHTML = back + header + `<div class="post-body">${marked.parse(fixImageRefs(body))}</div>`;
   if (window.hljs) hljs.highlightAll(); 
   if (postTitle) document.title = postTitle;
 }
