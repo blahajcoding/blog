@@ -134,9 +134,14 @@ window.addEventListener('hashchange', syncFromHash);
 //    relative paths (e.g. Images/foo.png) both resolve against the page origin
 //    otherwise, which 404s since assets live on blogarchive.orb.gay.
 function fixImageRefs(md) {
-  md = md.replace(/!\[\[([^\]]+)\]\]/g, (_, name) => {
-    const n = name.trim();
-    return `![${n}](${ARCHIVE_BASE}Images/${n})`;
+  md = md.replace(/!\[\[([^\]]+)\]\]([^[\n]*)/g, (_, spec, after) => {
+    let name = spec, caption = '';
+    const bar = spec.indexOf('|');
+    if (bar >= 0) { name = spec.slice(0, bar).trim(); caption = spec.slice(bar + 1).trim(); }
+    if (!caption) caption = after.trim();
+    const img = `<img src="${esc(ARCHIVE_BASE + 'Images/' + name)}" alt="${esc(name)}">`;
+    if (caption) return `<figure class="md-figure">${img}<figcaption>${esc(caption)}</figcaption></figure>`;
+    return img;
   });
   md = md.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, src) => {
     const s = src.trim();
@@ -144,6 +149,9 @@ function fixImageRefs(md) {
     return `![${alt}](${ARCHIVE_BASE}${s.replace(/^\.?\//, '')})`;
   });
   return md;
+}
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 function renderIfMarkdown(el) {
   if (el.childElementCount > 0) return;
